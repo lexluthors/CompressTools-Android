@@ -225,8 +225,6 @@ public class FileUtil
 
 	/**
 	 * 创建图片存储路径
-	 *
-	 * @return
 	 */
 	public static File getPhotoFileDir()
 	{
