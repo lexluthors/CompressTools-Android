@@ -20,243 +20,312 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class BitmapUtil {
+public class BitmapUtil
+{
 
-    public static Bitmap getScaledBitmap(Context context, Uri imageUri, float maxWidth, float maxHeight, Bitmap.Config bitmapConfig) {
-        String filePath = FileUtil.getRealPathFromURI(context, imageUri);
-        Bitmap scaledBitmap = null;
+	public static Bitmap getScaledBitmap(Context context, Uri imageUri, float maxWidth, float maxHeight, Bitmap.Config bitmapConfig)
+	{
+		String filePath = FileUtil.getRealPathFromURI(context, imageUri);
+		Bitmap scaledBitmap = null;
 
-        BitmapFactory.Options options = new BitmapFactory.Options();
+		BitmapFactory.Options options = new BitmapFactory.Options();
 
-        options.inJustDecodeBounds = true;
-        Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
-        if (bmp == null) {
-            InputStream inputStream = null;
-            try {
-                inputStream = new FileInputStream(filePath);
-                BitmapFactory.decodeStream(inputStream, null, options);
-                inputStream.close();
-            } catch (FileNotFoundException exception) {
-                exception.printStackTrace();
-            } catch (IOException exception) {
-                exception.printStackTrace();
-            }
-        }
+		options.inJustDecodeBounds = true;
+		Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
+		if (bmp == null)
+		{
+			InputStream inputStream = null;
+			try
+			{
+				inputStream = new FileInputStream(filePath);
+				BitmapFactory.decodeStream(inputStream, null, options);
+				inputStream.close();
+			}
+			catch (FileNotFoundException exception)
+			{
+				exception.printStackTrace();
+			}
+			catch (IOException exception)
+			{
+				exception.printStackTrace();
+			}
+		}
 
-        int actualHeight = options.outHeight;
-        int actualWidth = options.outWidth;
+		int actualHeight = options.outHeight;
+		int actualWidth = options.outWidth;
 
-        if (actualHeight == -1 || actualWidth == -1) {
-            try {
-                ExifInterface exifInterface = new ExifInterface(filePath);
-                actualHeight = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, ExifInterface.ORIENTATION_NORMAL);//获取图片的高度
-                actualWidth = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, ExifInterface.ORIENTATION_NORMAL);//获取图片的宽度
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+		if (actualHeight == -1 || actualWidth == -1)
+		{
+			try
+			{
+				ExifInterface exifInterface = new ExifInterface(filePath);
+				actualHeight = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_LENGTH, ExifInterface.ORIENTATION_NORMAL);// 获取图片的高度
+				actualWidth = exifInterface.getAttributeInt(ExifInterface.TAG_IMAGE_WIDTH, ExifInterface.ORIENTATION_NORMAL);// 获取图片的宽度
+			}
+			catch (IOException e)
+			{
+				e.printStackTrace();
+			}
+		}
 
-        if (actualWidth <= 0 || actualHeight <= 0) {
-            Bitmap bitmap2 = BitmapFactory.decodeFile(filePath);
-            if (bitmap2 != null) {
-                actualWidth = bitmap2.getWidth();
-                actualHeight = bitmap2.getHeight();
-            } else {
-                return null;
-            }
-        }
+		if (actualWidth <= 0 || actualHeight <= 0)
+		{
+			Bitmap bitmap2 = BitmapFactory.decodeFile(filePath);
+			if (bitmap2 != null)
+			{
+				actualWidth = bitmap2.getWidth();
+				actualHeight = bitmap2.getHeight();
+			}
+			else
+			{
+				return null;
+			}
+		}
 
-        float imgRatio = (float) actualWidth / actualHeight;
-        float maxRatio = maxWidth / maxHeight;
+		float imgRatio = (float) actualWidth / actualHeight;
+		float maxRatio = maxWidth / maxHeight;
 
-        //width and height values are set maintaining the aspect ratio of the image
-        if (actualHeight > maxHeight || actualWidth > maxWidth) {
-            if (imgRatio < maxRatio) {
-                imgRatio = maxHeight / actualHeight;
-                actualWidth = (int) (imgRatio * actualWidth);
-                actualHeight = (int) maxHeight;
-            } else if (imgRatio > maxRatio) {
-                imgRatio = maxWidth / actualWidth;
-                actualHeight = (int) (imgRatio * actualHeight);
-                actualWidth = (int) maxWidth;
-            } else {
-                actualHeight = (int) maxHeight;
-                actualWidth = (int) maxWidth;
-            }
-        }
+		// width and height values are set maintaining the aspect ratio of the image
+		if (actualHeight > maxHeight || actualWidth > maxWidth)
+		{
+			if (imgRatio < maxRatio)
+			{
+				imgRatio = maxHeight / actualHeight;
+				actualWidth = (int) (imgRatio * actualWidth);
+				actualHeight = (int) maxHeight;
+			}
+			else if (imgRatio > maxRatio)
+			{
+				imgRatio = maxWidth / actualWidth;
+				actualHeight = (int) (imgRatio * actualHeight);
+				actualWidth = (int) maxWidth;
+			}
+			else
+			{
+				actualHeight = (int) maxHeight;
+				actualWidth = (int) maxWidth;
+			}
+		}
 
-        //setting inSampleSize value allows to load a scaled down version of the original image
-        options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
+		// setting inSampleSize value allows to load a scaled down version of the original image
+		options.inSampleSize = calculateInSampleSize(options, actualWidth, actualHeight);
 
-        //inJustDecodeBounds set to false to load the actual bitmap
-        options.inJustDecodeBounds = false;
+		// inJustDecodeBounds set to false to load the actual bitmap
+		options.inJustDecodeBounds = false;
 
-        //this options allow android to claim the bitmap memory if it runs low on memory
-        options.inPurgeable = true;
-        options.inInputShareable = true;
-        options.inTempStorage = new byte[16 * 1024];
+		// this options allow android to claim the bitmap memory if it runs low on memory
+		options.inPurgeable = true;
+		options.inInputShareable = true;
+		options.inTempStorage = new byte[16 * 1024];
 
-        try {
-            // load the bitmap getTempFile its path
-            bmp = BitmapFactory.decodeFile(filePath, options);
-            if (bmp == null) {
-                InputStream inputStream = null;
-                try {
-                    inputStream = new FileInputStream(filePath);
-                    BitmapFactory.decodeStream(inputStream, null, options);
-                    inputStream.close();
-                } catch (IOException exception) {
-                    exception.printStackTrace();
-                }
-            }
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-        }
-        if (actualHeight <= 0 || actualWidth <= 0) {
-            return null;
-        }
+		try
+		{
+			// load the bitmap getTempFile its path
+			bmp = BitmapFactory.decodeFile(filePath, options);
+			if (bmp == null)
+			{
+				InputStream inputStream = null;
+				try
+				{
+					inputStream = new FileInputStream(filePath);
+					BitmapFactory.decodeStream(inputStream, null, options);
+					inputStream.close();
+				}
+				catch (IOException exception)
+				{
+					exception.printStackTrace();
+				}
+			}
+		}
+		catch (OutOfMemoryError exception)
+		{
+			exception.printStackTrace();
+		}
+		if (actualHeight <= 0 || actualWidth <= 0)
+		{
+			return null;
+		}
 
-        try {
-            scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, bitmapConfig);
-        } catch (OutOfMemoryError exception) {
-            exception.printStackTrace();
-        }
+		try
+		{
+			scaledBitmap = Bitmap.createBitmap(actualWidth, actualHeight, bitmapConfig);
+		}
+		catch (OutOfMemoryError exception)
+		{
+			exception.printStackTrace();
+		}
 
-        float ratioX = actualWidth / (float) options.outWidth;
-        float ratioY = actualHeight / (float) options.outHeight;
+		float ratioX = actualWidth / (float) options.outWidth;
+		float ratioY = actualHeight / (float) options.outHeight;
 
-        Matrix scaleMatrix = new Matrix();
-        scaleMatrix.setScale(ratioX, ratioY, 0, 0);
+		Matrix scaleMatrix = new Matrix();
+		scaleMatrix.setScale(ratioX, ratioY, 0, 0);
 
-        Canvas canvas = new Canvas(scaledBitmap);
-        canvas.setMatrix(scaleMatrix);
-        canvas.drawBitmap(bmp, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
+		Canvas canvas = new Canvas(scaledBitmap);
+		canvas.setMatrix(scaleMatrix);
+		canvas.drawBitmap(bmp, 0, 0, new Paint(Paint.FILTER_BITMAP_FLAG));
 
-        // 采用 ExitInterface 设置图片旋转方向
-        ExifInterface exif;
-        try {
-            exif = new ExifInterface(filePath);
-            int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
-            Matrix matrix = new Matrix();
-            if (orientation == 6) {
-                matrix.postRotate(90);
-            } else if (orientation == 3) {
-                matrix.postRotate(180);
-            } else if (orientation == 8) {
-                matrix.postRotate(270);
-            }
-            scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0,
-                    scaledBitmap.getWidth(), scaledBitmap.getHeight(),
-                    matrix, true);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+		// 采用 ExitInterface 设置图片旋转方向
+		ExifInterface exif;
+		try
+		{
+			exif = new ExifInterface(filePath);
+			int orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, 0);
+			Matrix matrix = new Matrix();
+			if (orientation == 6)
+			{
+				matrix.postRotate(90);
+			}
+			else if (orientation == 3)
+			{
+				matrix.postRotate(180);
+			}
+			else if (orientation == 8)
+			{
+				matrix.postRotate(270);
+			}
+			scaledBitmap = Bitmap.createBitmap(scaledBitmap, 0, 0, scaledBitmap.getWidth(), scaledBitmap.getHeight(), matrix, true);
+		}
+		catch (IOException e)
+		{
+			e.printStackTrace();
+		}
 
-        return scaledBitmap;
-    }
+		return scaledBitmap;
+	}
 
-    public static void compressImageJni(Context context, Uri imageUri, int maxWidth, int maxHeight,
-                                        Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
-                                        int quality, String parentPath, String prefix, String fileName, boolean optimize, final OnCompressListener mOnCompressListener) {
-        final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mOnCompressListener.onStart();
-            }
-        });
-        Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
-//        Bitmap newBmp = ImageUtils.readBitMap(FileUtil.getRealPathFromURI(context, imageUri));
-        if (newBmp != null) {
-            NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
-//            NativeUtil.nativeCompressBitmap(newBmp, quality, filename, true,maxWidth,maxHeight,bitmapConfig);
-        }
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mOnCompressListener.onSuccess(new File(filename));
-            }
-        });
-    }
-    public static void compressTOBitmapJni(final Context context, final Uri imageUri, int maxWidth, int maxHeight,
-                                           Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
-                                           int quality, String parentPath, String prefix, String fileName, boolean optimize, final OnCompressBitmapListener mOnCompressBitmapListener) {
-        final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mOnCompressBitmapListener.onStart();
-            }
-        });
-        Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
-//        Bitmap newBmp = ImageUtils.readBitMap(FileUtil.getRealPathFromURI(context, imageUri));
-        if (newBmp != null) {
-            NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
-//            NativeUtil.nativeCompressBitmap(newBmp, quality, filename, true,maxWidth,maxHeight,bitmapConfig);
-        }
-        new Handler(Looper.getMainLooper()).post(new Runnable() {
-            @Override
-            public void run() {
-                mOnCompressBitmapListener.onSuccess(readBitMap(filename));
-            }
-        });
-    }
+	public static void compressImageJni(Context context, Uri imageUri, int maxWidth, int maxHeight, Bitmap.CompressFormat compressFormat,
+			Bitmap.Config bitmapConfig, int quality, String parentPath, String prefix, String fileName, boolean optimize, boolean keepResolution,
+			final OnCompressListener mOnCompressListener)
+	{
+		final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
+		new Handler(Looper.getMainLooper()).post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mOnCompressListener.onStart();
+			}
+		});
+		Bitmap newBmp;
+		if (keepResolution)
+		{
+			newBmp = readBitMap(FileUtil.getRealPathFromURI(context, imageUri));
+		}
+		else
+		{
+			newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
+		}
+		if (newBmp != null)
+		{
+			NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
+			// NativeUtil.nativeCompressBitmap(newBmp, quality, filename,
+			// true,maxWidth,maxHeight,bitmapConfig);
+		}
+		new Handler(Looper.getMainLooper()).post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mOnCompressListener.onSuccess(new File(filename));
+			}
+		});
+	}
 
-    private static String generateFilePath(Context context, String parentPath, Uri uri,
-                                           String extension, String prefix, String fileName) {
-        File file = new File(parentPath);
-        if (!file.exists()) {
-            file.mkdirs();
-        }
-        /** if prefix is null, set prefix "" */
-        prefix = TextUtils.isEmpty(prefix) ? "" : prefix;
-        /** reset fileName by prefix and custom file name */
-        fileName = TextUtils.isEmpty(fileName) ? prefix + FileUtil.splitFileName(FileUtil.getFileName(context, uri))[0] : fileName;
-        return file.getAbsolutePath() + File.separator + fileName + "." + extension;
-    }
+	public static void compressTOBitmapJni(final Context context, final Uri imageUri, int maxWidth, int maxHeight, Bitmap.CompressFormat compressFormat,
+			Bitmap.Config bitmapConfig, int quality, String parentPath, String prefix, String fileName, boolean optimize,
+			final OnCompressBitmapListener mOnCompressBitmapListener)
+	{
+		final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
+		new Handler(Looper.getMainLooper()).post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mOnCompressBitmapListener.onStart();
+			}
+		});
+		Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
+		// Bitmap newBmp = ImageUtils.readBitMap(FileUtil.getRealPathFromURI(context, imageUri));
+		if (newBmp != null)
+		{
+			NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
+			// NativeUtil.nativeCompressBitmap(newBmp, quality, filename,
+			// true,maxWidth,maxHeight,bitmapConfig);
+		}
+		new Handler(Looper.getMainLooper()).post(new Runnable()
+		{
+			@Override
+			public void run()
+			{
+				mOnCompressBitmapListener.onSuccess(readBitMap(filename));
+			}
+		});
+	}
 
+	private static String generateFilePath(Context context, String parentPath, Uri uri, String extension, String prefix, String fileName)
+	{
+		File file = new File(parentPath);
+		if (!file.exists())
+		{
+			file.mkdirs();
+		}
+		/** if prefix is null, set prefix "" */
+		prefix = TextUtils.isEmpty(prefix) ? "" : prefix;
+		/** reset fileName by prefix and custom file name */
+		fileName = TextUtils.isEmpty(fileName) ? prefix + FileUtil.splitFileName(FileUtil.getFileName(context, uri))[0] : fileName;
+		return file.getAbsolutePath() + File.separator + fileName + "." + extension;
+	}
 
-    /**
-     * 计算inSampleSize
-     */
-    private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight) {
-        final int height = options.outHeight;
-        final int width = options.outWidth;
-        int inSampleSize = 1;
+	/**
+	 * 计算inSampleSize
+	 */
+	private static int calculateInSampleSize(BitmapFactory.Options options, int reqWidth, int reqHeight)
+	{
+		final int height = options.outHeight;
+		final int width = options.outWidth;
+		int inSampleSize = 1;
 
-        if (height > reqHeight || width > reqWidth) {
-            final int heightRatio = Math.round((float) height / (float) reqHeight);
-            final int widthRatio = Math.round((float) width / (float) reqWidth);
-            inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
-        }
+		if (height > reqHeight || width > reqWidth)
+		{
+			final int heightRatio = Math.round((float) height / (float) reqHeight);
+			final int widthRatio = Math.round((float) width / (float) reqWidth);
+			inSampleSize = heightRatio < widthRatio ? heightRatio : widthRatio;
+		}
 
-        final float totalPixels = width * height;
-        final float totalReqPixelsCap = reqWidth * reqHeight * 2;
+		final float totalPixels = width * height;
+		final float totalReqPixelsCap = reqWidth * reqHeight * 2;
 
-        while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap) {
-            inSampleSize++;
-        }
+		while (totalPixels / (inSampleSize * inSampleSize) > totalReqPixelsCap)
+		{
+			inSampleSize++;
+		}
 
-        return inSampleSize;
-    }
-    /**
-     * 以最省内存的方式读取本地资源的图片
-     */
-    public static Bitmap readBitMap(String path) {
-        BitmapFactory.Options opt = new BitmapFactory.Options();
-        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
-        opt.inPurgeable = true;
-        opt.inInputShareable = true;
-        // 获取资源图片
-        File file = new File(path);
-        FileInputStream is;
-        try {
-            is = new FileInputStream(file);
-            return BitmapFactory.decodeStream(is, null, opt);
-        } catch (FileNotFoundException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-            return null;
-        }
-    }
+		return inSampleSize;
+	}
+
+	/**
+	 * 以最省内存的方式读取本地资源的图片
+	 */
+	public static Bitmap readBitMap(String path)
+	{
+		BitmapFactory.Options opt = new BitmapFactory.Options();
+		opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+		opt.inPurgeable = true;
+		opt.inInputShareable = true;
+		// 获取资源图片
+		File file = new File(path);
+		FileInputStream is;
+		try
+		{
+			is = new FileInputStream(file);
+			return BitmapFactory.decodeStream(is, null, opt);
+		}
+		catch (FileNotFoundException e)
+		{
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

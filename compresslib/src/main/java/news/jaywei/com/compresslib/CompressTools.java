@@ -43,6 +43,10 @@ public class CompressTools {
      */
     private boolean optimize = true;
     /**
+     * 是否使用原图分辨率，默认为false
+     */
+    private boolean keepResolution = false;
+    /**
      * 存储路径
      */
     private String destinationDirectoryPath;
@@ -81,7 +85,7 @@ public class CompressTools {
             @Override
             public void run() {
                 BitmapUtil.compressImageJni(context, Uri.fromFile(file), maxWidth, maxHeight, compressFormat, bitmapConfig, quality, destinationDirectoryPath,
-                        fileNamePrefix, fileName, optimize, mOnCompressListener);
+                        fileNamePrefix, fileName, optimize,keepResolution, mOnCompressListener);
             }
         }).start();
     }
@@ -106,10 +110,10 @@ public class CompressTools {
      * 采用建造者模式，设置Builder
      */
     public static class Builder {
-        private CompressTools mCompressHelper;
+        private CompressTools compressTools;
 
         public Builder(Context context) {
-            mCompressHelper = new CompressTools(context);
+            compressTools = new CompressTools(context);
         }
 
         /**
@@ -118,7 +122,7 @@ public class CompressTools {
          * @param maxWidth 最大宽度
          */
         public Builder setMaxWidth(int maxWidth) {
-            mCompressHelper.maxWidth = maxWidth;
+            compressTools.maxWidth = maxWidth;
             return this;
         }
 
@@ -128,7 +132,7 @@ public class CompressTools {
          * @param maxHeight 最大高度
          */
         public Builder setMaxHeight(int maxHeight) {
-            mCompressHelper.maxHeight = maxHeight;
+            compressTools.maxHeight = maxHeight;
             return this;
         }
 
@@ -136,14 +140,14 @@ public class CompressTools {
          * 设置压缩的后缀格式
          */
         public Builder setCompressFormat(Bitmap.CompressFormat compressFormat) {
-            mCompressHelper.compressFormat = compressFormat;
+            compressTools.compressFormat = compressFormat;
             return this;
         }
         /**
          * 设置是否开启压缩最优化
          */
         public Builder setOptimize(boolean optimize) {
-            mCompressHelper.optimize = optimize;
+            compressTools.optimize = optimize;
             return this;
         }
 
@@ -151,7 +155,15 @@ public class CompressTools {
          * 设置Bitmap的参数
          */
         public Builder setBitmapConfig(Bitmap.Config bitmapConfig) {
-            mCompressHelper.bitmapConfig = bitmapConfig;
+            compressTools.bitmapConfig = bitmapConfig;
+            return this;
+        }
+
+        /**
+         * 设置分辨率是否保持原图分辨率
+         */
+        public Builder setKeepResolution(boolean keepResolution) {
+            compressTools.keepResolution = keepResolution;
             return this;
         }
 
@@ -161,7 +173,7 @@ public class CompressTools {
          * @param quality 压缩质量，[0,100]
          */
         public Builder setQuality(int quality) {
-            mCompressHelper.quality = quality;
+            compressTools.quality = quality;
             return this;
         }
 
@@ -171,7 +183,7 @@ public class CompressTools {
          * @param destinationDirectoryPath 目的路径
          */
         public Builder setDestinationDirectoryPath(String destinationDirectoryPath) {
-            mCompressHelper.destinationDirectoryPath = destinationDirectoryPath;
+            compressTools.destinationDirectoryPath = destinationDirectoryPath;
             return this;
         }
 
@@ -181,7 +193,7 @@ public class CompressTools {
          * @param prefix 前缀
          */
         public Builder setFileNamePrefix(String prefix) {
-            mCompressHelper.fileNamePrefix = prefix;
+            compressTools.fileNamePrefix = prefix;
             return this;
         }
 
@@ -191,12 +203,12 @@ public class CompressTools {
          * @param fileName 文件名
          */
         public Builder setFileName(String fileName) {
-            mCompressHelper.fileName = fileName;
+            compressTools.fileName = fileName;
             return this;
         }
 
         public CompressTools build() {
-            return mCompressHelper;
+            return compressTools;
         }
     }
 }

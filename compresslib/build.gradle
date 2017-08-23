@@ -1,5 +1,15 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'//添加
 
+//添加
+publish {
+    userOrg = 'lexluthors'//bintray.com用户名
+    groupId = 'com.halloandroid'//jcenter上的路径
+    artifactId = 'tobebetter'//项目名称
+    publishVersion = '1.0.0'//版本号
+    desc = 'this is for test'//描述，不重要
+    website = 'https://github.com/shanlovana/tobebetter'//网站，最好有，不重要
+}
 android {
     compileSdkVersion 25
     buildToolsVersion "26.0.0"
