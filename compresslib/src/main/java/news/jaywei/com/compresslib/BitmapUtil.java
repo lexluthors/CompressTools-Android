@@ -8,30 +8,26 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
+import android.os.Handler;
+import android.os.Looper;
 import android.text.TextUtils;
+
+import net.bither.util.NativeUtil;
 
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * description:
- * author: liujie
- * date: 2017/8/21 18:31
- */
 public class BitmapUtil {
 
-   public static Bitmap getScaledBitmap(Context context, Uri imageUri, float maxWidth, float maxHeight, Bitmap.Config bitmapConfig) {
+    public static Bitmap getScaledBitmap(Context context, Uri imageUri, float maxWidth, float maxHeight, Bitmap.Config bitmapConfig) {
         String filePath = FileUtil.getRealPathFromURI(context, imageUri);
         Bitmap scaledBitmap = null;
 
         BitmapFactory.Options options = new BitmapFactory.Options();
 
-        //by setting this field as true, the actual bitmap pixels are not loaded in the memory. Just the bounds are loaded. If
-        //you try the use the bitmap here, you will get null.
         options.inJustDecodeBounds = true;
         Bitmap bmp = BitmapFactory.decodeFile(filePath, options);
         if (bmp == null) {
@@ -159,57 +155,51 @@ public class BitmapUtil {
         return scaledBitmap;
     }
 
-    public static File compressImage(Context context, Uri imageUri, float maxWidth, float maxHeight,
-                              Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
-                              int quality, String parentPath, String prefix, String fileName) {
-        FileOutputStream out = null;
-        String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
-        try {
-            out = new FileOutputStream(filename);
-            // 通过文件名写入
-            Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
-            if (newBmp != null) {
-                newBmp.compress(compressFormat, quality, out);
+    public static void compressImageJni(Context context, Uri imageUri, int maxWidth, int maxHeight,
+                                        Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
+                                        int quality, String parentPath, String prefix, String fileName, boolean optimize, final OnCompressListener mOnCompressListener) {
+        final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mOnCompressListener.onStart();
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException ignored) {
-            }
+        });
+        Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
+//        Bitmap newBmp = ImageUtils.readBitMap(FileUtil.getRealPathFromURI(context, imageUri));
+        if (newBmp != null) {
+            NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
+//            NativeUtil.nativeCompressBitmap(newBmp, quality, filename, true,maxWidth,maxHeight,bitmapConfig);
         }
-
-        return new File(filename);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mOnCompressListener.onSuccess(new File(filename));
+            }
+        });
     }
-    public static File compressImageJni(Context context, Uri imageUri, float maxWidth, float maxHeight,
-                              Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
-                              int quality, String parentPath, String prefix, String fileName) {
-        FileOutputStream out = null;
-        String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
-        try {
-            out = new FileOutputStream(filename);
-            // 通过文件名写入
-            Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
-            if (newBmp != null) {
-                newBmp.compress(compressFormat, quality, out);
+    public static void compressTOBitmapJni(final Context context, final Uri imageUri, int maxWidth, int maxHeight,
+                                           Bitmap.CompressFormat compressFormat, Bitmap.Config bitmapConfig,
+                                           int quality, String parentPath, String prefix, String fileName, boolean optimize, final OnCompressBitmapListener mOnCompressBitmapListener) {
+        final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mOnCompressBitmapListener.onStart();
             }
-
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                if (out != null) {
-                    out.close();
-                }
-            } catch (IOException ignored) {
-            }
+        });
+        Bitmap newBmp = BitmapUtil.getScaledBitmap(context, imageUri, maxWidth, maxHeight, bitmapConfig);
+//        Bitmap newBmp = ImageUtils.readBitMap(FileUtil.getRealPathFromURI(context, imageUri));
+        if (newBmp != null) {
+            NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
+//            NativeUtil.nativeCompressBitmap(newBmp, quality, filename, true,maxWidth,maxHeight,bitmapConfig);
         }
-
-        return new File(filename);
+        new Handler(Looper.getMainLooper()).post(new Runnable() {
+            @Override
+            public void run() {
+                mOnCompressBitmapListener.onSuccess(readBitMap(filename));
+            }
+        });
     }
 
     private static String generateFilePath(Context context, String parentPath, Uri uri,
@@ -248,5 +238,25 @@ public class BitmapUtil {
         }
 
         return inSampleSize;
+    }
+    /**
+     * 以最省内存的方式读取本地资源的图片
+     */
+    public static Bitmap readBitMap(String path) {
+        BitmapFactory.Options opt = new BitmapFactory.Options();
+        opt.inPreferredConfig = Bitmap.Config.ARGB_8888;
+        opt.inPurgeable = true;
+        opt.inInputShareable = true;
+        // 获取资源图片
+        File file = new File(path);
+        FileInputStream is;
+        try {
+            is = new FileInputStream(file);
+            return BitmapFactory.decodeStream(is, null, opt);
+        } catch (FileNotFoundException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            return null;
+        }
     }
 }
