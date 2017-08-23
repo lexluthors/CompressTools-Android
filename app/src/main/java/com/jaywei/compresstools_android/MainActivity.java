@@ -1,7 +1,6 @@
 package com.jaywei.compresstools_android;
 
 import android.content.Intent;
-import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -49,77 +48,78 @@ public class MainActivity extends AppCompatActivity
 	public void compress(View view)
 	{
 		// 压缩本地图片，返回新的file
-		// CompressTools.getDefault(this).compressToFileJni(oldFile, new OnCompressListener()
-		// {
-		// @Override
-		// public void onStart()
-		// {
-		//
-		// }
-		//
-		// @Override
-		// public void onSuccess(File file)
-		// {
-		//
-		// }
-		// });
+		CompressTools.getDefault(this).compressToFileJni(oldFile, new OnCompressListener()
+		{
+			@Override
+			public void onStart()
+			{
 
-		new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
-				.setMaxHeight(1920) // 默认最大高度为960
-				.setQuality(50) // 默认压缩质量为60,60足够清晰
-				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-				.setFileName("test1").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-				.compressToFileJni(oldFile, new OnCompressListener()
-				{
-					@Override
-					public void onStart()
-					{
+			}
 
-					}
+			@Override
+			public void onSuccess(File file)
+			{
 
-					@Override
-					public void onSuccess(File file)
-					{
-						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-						mainImageNew.setImageBitmap(bitmap);
-						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-					}
-				});
-		// 压缩bitmap
-		// CompressTools.getDefault(this).compressToBitmapJni(oldFile, new
-		// OnCompressBitmapListener() {
-		// @Override
-		// public void onStart() {
-		//
-		// }
-		//
-		// @Override
-		// public void onSuccess(Bitmap bitmap) {
-		//
-		// }
-		// });
+			}
+		});
 
-		// new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
-		// .setMaxHeight(1920) // 默认最大高度为960
-		// .setQuality(50) // 默认压缩质量为60,60足够清晰
-		// .setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-		// .setFileName("test2").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-		// .compressToBitmapJni(oldFile, new OnCompressBitmapListener()
-		// {
-		// @Override
-		// public void onStart()
-		// {
-		//
-		// }
-		//
-		// @Override
-		// public void onSuccess(Bitmap bitmap)
-		// {
-		// mainImageNew.setImageBitmap(bitmap);
-		// mainTextNew.setText(String.format("Size : %s",
-		// getReadableFileSize(bitmap.getByteCount())));
-		// }
-		// });
+//		new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
+//				.setMaxHeight(1920) // 默认最大高度为960
+//				.setQuality(50) // 默认压缩质量为60,60足够清晰
+//				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+//				.setFileName("test1").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+//				.compressToFileJni(oldFile, new OnCompressListener()
+//				{
+//					@Override
+//					public void onStart()
+//					{
+//
+//					}
+//
+//					@Override
+//					public void onSuccess(File file)
+//					{
+//						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+//						mainImageNew.setImageBitmap(bitmap);
+//						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+//					}
+//				});
+//		// 压缩bitmap
+//		CompressTools.getDefault(this).compressToBitmapJni(oldFile, new OnCompressBitmapListener()
+//		{
+//			@Override
+//			public void onStart()
+//			{
+//
+//			}
+//
+//			@Override
+//			public void onSuccess(Bitmap bitmap)
+//			{
+//
+//			}
+//		});
+//
+//		new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
+//				.setMaxHeight(1920) // 默认最大高度为960
+//				.setQuality(50) // 默认压缩质量为60,60足够清晰
+//				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+//				.setFileName("test2").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+//				.compressToBitmapJni(oldFile, new OnCompressBitmapListener()
+//				{
+//					@Override
+//					public void onStart()
+//					{
+//
+//					}
+//
+//					@Override
+//					public void onSuccess(Bitmap bitmap)
+//					{
+//						mainImageNew.setImageBitmap(bitmap);
+//						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
+//					}
+//				});
 	}
 
 	public void takePhoto(View view)
