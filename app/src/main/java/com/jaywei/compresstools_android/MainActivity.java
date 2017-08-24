@@ -1,6 +1,7 @@
 package com.jaywei.compresstools_android;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -59,7 +60,9 @@ public class MainActivity extends AppCompatActivity
 			@Override
 			public void onSuccess(File file)
 			{
-
+				Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+				mainImageNew.setImageBitmap(bitmap);
+				mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
 			}
 		});
 
