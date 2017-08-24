@@ -5,6 +5,9 @@
 *几乎无损压缩图片，保持清晰度最优。可以对比原生方法bitmap.compress(CompressFormat.JPEG, quality, fileOutputStream);
 *占用内存少，支持生成原图分辨率图片；
 
+| ImageInfo     | compressTool  | Wechat|
+| ------------- |:-------------:| -----:|
+| 1.50MB (1920x1080)| 47.32kb(1280*720) | 51.4kb(1280*720) |
 
 
 **使用方法：**
@@ -94,6 +97,8 @@
     					{
     					}
     				});
+
+
 
 
 有问题联系我：lexluthors@163.com
