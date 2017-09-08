@@ -49,45 +49,45 @@ public class MainActivity extends AppCompatActivity
 	public void compress(View view)
 	{
 		// 压缩本地图片，返回新的file
-		CompressTools.getDefault(this).compressToFileJni(oldFile, new OnCompressListener()
-		{
-			@Override
-			public void onStart()
-			{
+//		CompressTools.getDefault(this).compressToFileJni(oldFile, new OnCompressListener()
+//		{
+//			@Override
+//			public void onStart()
+//			{
+//
+//			}
+//
+//			@Override
+//			public void onSuccess(File file)
+//			{
+//				Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+//				mainImageNew.setImageBitmap(bitmap);
+//				mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+//			}
+//		});
 
-			}
-
-			@Override
-			public void onSuccess(File file)
-			{
-				Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-				mainImageNew.setImageBitmap(bitmap);
-				mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-			}
-		});
-
-//		new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
-//				.setMaxHeight(1920) // 默认最大高度为960
-//				.setQuality(50) // 默认压缩质量为60,60足够清晰
-//				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+		new CompressTools.Builder(this).setMaxWidth(1280) // 默认最大宽度为720
+				.setMaxHeight(850) // 默认最大高度为960
+				.setQuality(50) // 默认压缩质量为60,60足够清晰
+				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
 //				.setKeepResolution(true)//设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
-//				.setFileName("test1").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-//				.compressToFileJni(oldFile, new OnCompressListener()
-//				{
-//					@Override
-//					public void onStart()
-//					{
-//
-//					}
-//
-//					@Override
-//					public void onSuccess(File file)
-//					{
-//						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//						mainImageNew.setImageBitmap(bitmap);
-//						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-//					}
-//				});
+				.setFileName("test").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+				.compressToFileJni(oldFile, new OnCompressListener()
+				{
+					@Override
+					public void onStart()
+					{
+
+					}
+
+					@Override
+					public void onSuccess(File file)
+					{
+						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+						mainImageNew.setImageBitmap(bitmap);
+						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+					}
+				});
 //		// 压缩bitmap
 //		CompressTools.getDefault(this).compressToBitmapJni(oldFile, new OnCompressBitmapListener()
 //		{
