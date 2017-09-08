@@ -13,14 +13,15 @@
 | 1.50MB (1920x1080)| 47.32kb(1280*720) | 51.4kb(1280*720) |
 
 
-放两张效果图，大家可以看看效果是不是一样的。尺寸大小几乎一模一样！大家可以down下来，查看一下。
+**放两张效果图，大家可以看看效果是不是一样的。尺寸大小几乎一模一样！大家可以down下来，查看一下。**
+这个是采用该库压缩后的图片：
+![](https://github.com/lexluthors/CompressTools-Android/blob/master/app/src/main/assets/android_compressTool.jpeg)
 
 这个是微信压缩后的图片：
 ![](https://github.com/lexluthors/CompressTools-Android/blob/master/app/src/main/assets/weixin_compress.jpg)
 
 
-这个是采用该库压缩后的图片：
-![](https://github.com/lexluthors/CompressTools-Android/blob/master/app/src/main/assets/android_compressTool.jpeg)
+
 
 
 
