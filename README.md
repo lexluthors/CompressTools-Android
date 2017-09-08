@@ -2,12 +2,26 @@
 
 **特性：**
 
+*这是和微信压缩效果一样的压缩方式，采用底层压缩。
 *几乎无损压缩图片，保持清晰度最优。可以对比原生方法bitmap.compress(CompressFormat.JPEG, quality, fileOutputStream);
-*占用内存少，支持生成原图分辨率图片；
+*占用内存少，支持压缩生成原图分辨率图片；
+
+**对比：**
 
 | ImageInfo     | compressTool  | Wechat|
 | ------------- |:-------------:| -----:|
 | 1.50MB (1920x1080)| 47.32kb(1280*720) | 51.4kb(1280*720) |
+
+
+放两张效果图，大家可以看看效果是不是一样的。尺寸大小几乎一模一样！大家可以down下来，查看一下。
+
+这个是微信压缩后的图片：
+![](https://github.com/lexluthors/CompressTools-Android/blob/master/app/src/main/assets/weixin_compress.jpg)
+
+
+这个是采用该库压缩后的图片：
+![](https://github.com/lexluthors/CompressTools-Android/blob/master/app/src/main/assets/android_compressTool.jpeg)
+
 
 
 **使用方法：**
