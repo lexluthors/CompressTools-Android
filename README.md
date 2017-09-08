@@ -119,5 +119,3 @@
 
 有问题联系我：lexluthors@163.com
 
-感谢：
-本项目部分参考了：https://github.com/nanchen2251/CompressHelper
