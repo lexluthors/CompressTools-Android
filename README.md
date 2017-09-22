@@ -35,7 +35,7 @@
 
 **使用方法：**
 
-    compile 'com.jaywei:compresstool:1.0.0'
+    compile 'com.jaywei:compresstool:1.0.2'
 
 
 **1和2使用默认设置，默认设置最大宽高为720*960**
