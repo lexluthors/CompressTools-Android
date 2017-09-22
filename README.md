@@ -1,12 +1,19 @@
-#CompressTools-Android
+#CompressTools-Android 压缩，图片压缩，压缩Bitmap
+
 
 **特性：**
 
-*这是和微信压缩效果一样的压缩方式，采用底层压缩。
+***这是和微信压缩效果一样的压缩方式，采用底层压缩，可能是最好的解决方案。**
 
-*几乎无损压缩图片，保持清晰度最优。可以对比原生方法bitmap.compress(CompressFormat.JPEG, quality, fileOutputStream);
+***几乎无损压缩图片，保持清晰度最优。可以对比原生方法bitmap.compress(CompressFormat.JPEG, quality, fileOutputStream);**
 
-*占用内存少，支持压缩生成原图分辨率图片；
+***占用内存少，支持压缩生成原图分辨率图片；**
+
+***支持批量压缩，采用线程池提高性能**
+
+***支持压缩监听回调**
+
+***支持返回Bitmap和File**
 
 **对比：**
 
@@ -35,7 +42,7 @@
 
 **1，压缩本地图片**
 
-    CompressTools.getDefault(this).compressToFileJni(oldFile, new OnCompressListener()
+    CompressTools.getDefault(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
     		{
     			@Override
     			public void onStart()
@@ -52,7 +59,7 @@
 
 **2，压缩bitmap：**
 
-    CompressTools.getDefault(this).compressToBitmapJni(oldFile, new OnCompressBitmapListener()
+    CompressTools.getDefault(this).compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
     		{
     			@Override
     			public void onStart()
@@ -77,7 +84,7 @@
     				//.setKeepResolution(true)//设置是否保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
     				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
     				.setFileName("test1").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-    				.compressToFileJni(oldFile, new OnCompressListener()
+    				.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
     				{
     					@Override
     					public void onStart()
@@ -100,7 +107,7 @@
     				.setQuality(50) // 默认压缩质量为60,60足够清晰
     				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
     				.setFileName("test2").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-    				.compressToBitmapJni(oldFile, new OnCompressBitmapListener()
+    				.compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
     				{
     					@Override
     					public void onStart()
@@ -114,8 +121,44 @@
     					}
     				});
 
+**5，批量压缩：**
+
+   **可以直接使用循环添加压缩任务，内部做了线程处理**
+
+    for (int i = 0; i < 5; i++)
+    		{
+    			new CompressTools.Builder(this).setMaxWidth(1280) // 默认最大宽度为720
+    					.setMaxHeight(850) // 默认最大高度为960
+    					.setQuality(50) // 默认压缩质量为60,60足够清晰
+    					.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+    					// .setKeepResolution(true)//设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
+    					.setFileName("test"+i).setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+    					.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+    					{
+    						@Override
+    						public void onStart()
+    						{
+
+    						}
+
+    						@Override
+    						public void onSuccess(File file)
+    						{
+
+    						}
+    					});
+    		}
 
 
+
+**写在最后：开源不易，如果对你有帮助希望能给个star或fork激励我继续坚持。**
 
 有问题联系我：lexluthors@163.com
+
+
+
+
+
+
+
 

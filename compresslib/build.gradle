@@ -5,7 +5,7 @@ publish {
     userOrg = 'lexluthors'
     groupId = 'com.jaywei'
     artifactId = 'compresstool'
-    publishVersion = '1.0.0'
+    publishVersion = '1.0.2'
     desc = 'Android compress image or bitmap'
     website = 'https://github.com/lexluthors/CompressTools-Android'
 }

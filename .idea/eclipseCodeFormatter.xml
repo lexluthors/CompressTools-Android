@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="EclipseCodeFormatterProjectSettings">
+    <option name="selectedGlobalProfile">
+      <Settings>
+        <option name="formatter" value="ECLIPSE" />
+        <option name="id" value="1498027223245" />
+        <option name="name" value="default" />
+        <option name="pathToConfigFileJava" value="$USER_HOME$/Desktop/javaFormatter.xml" />
+        <option name="selectedJavaProfile" value="PhonePlusJavaFormatter" />
+      </Settings>
+    </option>
+  </component>
+</project>

@@ -8,8 +8,6 @@ import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.media.ExifInterface;
 import android.net.Uri;
-import android.os.Handler;
-import android.os.Looper;
 import android.text.TextUtils;
 
 import net.bither.util.NativeUtil;
@@ -196,14 +194,12 @@ public class BitmapUtil
 
 	public static void compressImageJni(Context context, Uri imageUri, int maxWidth, int maxHeight, Bitmap.CompressFormat compressFormat,
 			Bitmap.Config bitmapConfig, int quality, String parentPath, String prefix, String fileName, boolean optimize, boolean keepResolution,
-			final OnCompressListener mOnCompressListener)
+			final CompressTools.OnCompressListener mOnCompressListener)
 	{
 		final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
-		new Handler(Looper.getMainLooper()).post(new Runnable()
-		{
+		FileUtil.runOnUiThread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				mOnCompressListener.onStart();
 			}
 		});
@@ -219,14 +215,10 @@ public class BitmapUtil
 		if (newBmp != null)
 		{
 			NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
-			// NativeUtil.nativeCompressBitmap(newBmp, quality, filename,
-			// true,maxWidth,maxHeight,bitmapConfig);
 		}
-		new Handler(Looper.getMainLooper()).post(new Runnable()
-		{
+		FileUtil.runOnUiThread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				mOnCompressListener.onSuccess(new File(filename));
 			}
 		});
@@ -234,14 +226,12 @@ public class BitmapUtil
 
 	public static void compressTOBitmapJni(final Context context, final Uri imageUri, int maxWidth, int maxHeight, Bitmap.CompressFormat compressFormat,
 			Bitmap.Config bitmapConfig, int quality, String parentPath, String prefix, String fileName, boolean optimize,
-			final OnCompressBitmapListener mOnCompressBitmapListener)
+			final CompressTools.OnCompressBitmapListener mOnCompressBitmapListener)
 	{
 		final String filename = generateFilePath(context, parentPath, imageUri, compressFormat.name().toLowerCase(), prefix, fileName);
-		new Handler(Looper.getMainLooper()).post(new Runnable()
-		{
+		FileUtil.runOnUiThread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				mOnCompressBitmapListener.onStart();
 			}
 		});
@@ -250,14 +240,10 @@ public class BitmapUtil
 		if (newBmp != null)
 		{
 			NativeUtil.saveBitmap(newBmp, quality, filename, optimize);
-			// NativeUtil.nativeCompressBitmap(newBmp, quality, filename,
-			// true,maxWidth,maxHeight,bitmapConfig);
 		}
-		new Handler(Looper.getMainLooper()).post(new Runnable()
-		{
+		FileUtil.runOnUiThread(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				mOnCompressBitmapListener.onSuccess(readBitMap(filename));
 			}
 		});

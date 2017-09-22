@@ -4,6 +4,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
@@ -15,6 +17,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.DecimalFormat;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 public class FileUtil
 {
@@ -254,4 +258,26 @@ public class FileUtil
 		return Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED);
 	}
 
+	private static Handler sHandler = new Handler(Looper.getMainLooper());
+
+	private static ExecutorService sExecutorService = Executors.newSingleThreadExecutor();
+
+	public static void runOnUiThread(Runnable r)
+	{
+
+		if (Looper.myLooper() == Looper.getMainLooper())
+		{
+			r.run();
+		}
+		else
+		{
+			sHandler.post(r);
+		}
+
+	}
+
+	public static void runOnSubThread(Runnable r)
+	{
+		sExecutorService.submit(r);
+	}
 }
