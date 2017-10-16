@@ -260,7 +260,7 @@ public class BitmapUtil
 		prefix = TextUtils.isEmpty(prefix) ? "" : prefix;
 		/** reset fileName by prefix and custom file name */
 		fileName = TextUtils.isEmpty(fileName) ? prefix + FileUtil.splitFileName(FileUtil.getFileName(context, uri))[0] : fileName;
-		return file.getAbsolutePath() + File.separator + fileName + "." + extension;
+		return file.getAbsolutePath() + File.separator + System.currentTimeMillis() + "." + extension;
 	}
 
 	/**
@@ -314,4 +314,5 @@ public class BitmapUtil
 			return null;
 		}
 	}
+
 }

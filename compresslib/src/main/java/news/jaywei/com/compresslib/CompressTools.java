@@ -258,4 +258,40 @@ public class CompressTools
 		void onSuccess(File file);
 	}
 
+//	private void requestPermission(Activity context) {
+//		if (Build.VERSION.SDK_INT >= 23) {
+//			String[] permission = new String[]{
+//					Manifest.permission.READ_EXTERNAL_STORAGE,
+//					Manifest.permission.WRITE_EXTERNAL_STORAGE
+//			};
+//			String[] deniedPermissions = getDeniedPermissions(context, permission);
+//
+//			if (deniedPermissions.length == 0) {
+////				dispatchGrantedPermission(requestCode);
+//			} else {
+//				ActivityCompat.requestPermissions(
+//						context,
+//						deniedPermissions,
+//						111);
+//			}
+//		} else {
+////			dispatchGrantedPermission(requestCode);
+//		}
+//	}
+//
+//	public static String[] getDeniedPermissions(Context context, @NonNull String... permissions) {
+//		List<String> deniedList = new ArrayList<>(2);
+//		for (String permission : permissions)
+//			if (ContextCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED)
+//				deniedList.add(permission);
+//		return deniedList.toArray(new String[deniedList.size()]);
+//	}
+//
+//	public static boolean isGrantedResult(int... permissionResult) {
+//		for (int result : permissionResult) {
+//			if (result == PackageManager.PERMISSION_DENIED) return false;
+//		}
+//		return true;
+//	}
+
 }
