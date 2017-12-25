@@ -243,15 +243,15 @@ public class CompressTools
 	public interface OnCompressBitmapListener
 	{
 		void onStart();
-
 		void onSuccess(Bitmap bitmap);
+		void onFail(String error);
 	}
 
 	public interface OnCompressListener
 	{
 
 		void onStart();
-
+		void onFail(String error);
 		void onSuccess(File file);
 	}
 

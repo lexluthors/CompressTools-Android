@@ -46,7 +46,94 @@ public class MainActivity extends AppCompatActivity
 	public void compress(View view)
 	{
 		// 压缩本地图片，返回新的file
-//		CompressTools.getDefault(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		CompressTools.getDefault(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		{
+			@Override
+			public void onStart()
+			{
+
+			}
+
+			@Override
+			public void onFail(String error)
+			{
+
+			}
+
+			@Override
+			public void onSuccess(File file)
+			{
+				Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+				mainImageNew.setImageBitmap(bitmap);
+				mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+			}
+		});
+
+		// for (int i = 0; i < 5; i++)
+		// {
+		// new CompressTools.Builder(this)
+		// // .setMaxWidth(1280) // 默认最大宽度为720
+		// // .setMaxHeight(850) // 默认最大高度为960
+		// .setQuality(50) // 默认压缩质量为60,60足够清晰
+		// .setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+		// .setKeepResolution(true)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
+		// .setFileName("testasdfas").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+		// .compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		// {
+		// @Override
+		// public void onStart()
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onFail(String error)
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onSuccess(File file)
+		// {
+		// Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+		// mainImageNew.setImageBitmap(bitmap);
+		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+		// }
+		// });
+		// }
+
+		// new CompressTools.Builder(this)
+		// // .setMaxWidth(1280) // 默认最大宽度为720
+		// // .setMaxHeight(850) // 默认最大高度为960
+		// .setQuality(50) // 默认压缩质量为60,60足够清晰
+		// .setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+		// .setKeepResolution(false)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
+		// .setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+		// .compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		// {
+		// @Override
+		// public void onStart()
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onFail(String error)
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onSuccess(File file)
+		// {
+		// Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+		// mainImageNew.setImageBitmap(bitmap);
+		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+		// }
+		// });
+
+		// // 压缩bitmap
+//		CompressTools.getDefault(this).compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
 //		{
 //			@Override
 //			public void onStart()
@@ -55,103 +142,44 @@ public class MainActivity extends AppCompatActivity
 //			}
 //
 //			@Override
-//			public void onSuccess(File file)
+//			public void onSuccess(Bitmap bitmap)
 //			{
-//				Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//				mainImageNew.setImageBitmap(bitmap);
-//				mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+//
+//			}
+//
+//			@Override
+//			public void onFail(String error)
+//			{
+//
 //			}
 //		});
-//		for (int i = 0; i < 5; i++)
-//		{
-//			new CompressTools.Builder(this)
-//					// .setMaxWidth(1280) // 默认最大宽度为720
-//					// .setMaxHeight(850) // 默认最大高度为960
-//					.setQuality(50) // 默认压缩质量为60,60足够清晰
-//					.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-//					.setKeepResolution(true)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
-//					.setFileName("testasdfas").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-//					.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
-//					{
-//						@Override
-//						public void onStart()
-//						{
-//
-//						}
-//
-//						@Override
-//						public void onSuccess(File file)
-//						{
-//							Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-//							mainImageNew.setImageBitmap(bitmap);
-//							mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-//						}
-//					});
-//		}
 
-
-		new CompressTools.Builder(this)
-					// .setMaxWidth(1280) // 默认最大宽度为720
-					// .setMaxHeight(850) // 默认最大高度为960
-					.setQuality(50) // 默认压缩质量为60,60足够清晰
-					.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-					.setKeepResolution(true)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
-					.setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-					.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		new CompressTools.Builder(this).setMaxWidth(500) // 默认最大宽度为720
+				.setMaxHeight(600) // 默认最大高度为960
+				.setQuality(50) // 默认压缩质量为60,60足够清晰
+				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+				.build().compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
+				{
+					@Override
+					public void onStart()
 					{
-						@Override
-						public void onStart()
-						{
 
-						}
+					}
 
-						@Override
-						public void onSuccess(File file)
-						{
-							Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-							mainImageNew.setImageBitmap(bitmap);
-							mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-						}
-					});
+					@Override
+					public void onSuccess(Bitmap bitmap)
+					{
+						mainImageNew.setImageBitmap(bitmap);
+						// 这里读取的是bitmap的大小，所以会显示比老图片读取的file大小要大
+						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
+					}
 
+					@Override
+					public void onFail(String error)
+					{
 
-		// // 压缩bitmap
-		// CompressTools.getDefault(this).compressToBitmapJni(oldFile, new
-		// CompressTools.OnCompressBitmapListener()
-		// {
-		// @Override
-		// public void onStart()
-		// {
-		//
-		// }
-		//
-		// @Override
-		// public void onSuccess(Bitmap bitmap)
-		// {
-		//
-		// }
-		// });
-
-		// new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
-		// .setMaxHeight(1920) // 默认最大高度为960
-		// .setQuality(50) // 默认压缩质量为60,60足够清晰
-		// .setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-		// .setFileName("test2").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-		// .compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
-		// {
-		// @Override
-		// public void onStart()
-		// {
-		//
-		// }
-		//
-		// @Override
-		// public void onSuccess(Bitmap bitmap)
-		// {
-		// mainImageNew.setImageBitmap(bitmap);
-		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
-		// }
-		// });
+					}
+				});
 	}
 
 	public void takePhoto(View view)
@@ -169,7 +197,7 @@ public class MainActivity extends AppCompatActivity
 		{
 			if (data == null)
 			{
-				showError("Failed to open picture!");
+				showError("打开失败");
 				return;
 			}
 			try
@@ -177,11 +205,10 @@ public class MainActivity extends AppCompatActivity
 				oldFile = FileUtil.getTempFile(this, data.getData());
 				mainImageOld.setImageBitmap(BitmapFactory.decodeFile(oldFile.getAbsolutePath()));
 				mainTextOld.setText(String.format("Size : %s", getReadableFileSize(oldFile.length())));
-//				clearImage();
 			}
 			catch (IOException e)
 			{
-				showError("Failed to read picture data!");
+				showError("读图失败");
 				e.printStackTrace();
 			}
 		}
@@ -191,19 +218,5 @@ public class MainActivity extends AppCompatActivity
 	{
 		Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
 	}
-
-//	private int getRandomColor()
-//	{
-//		Random rand = new Random();
-//		return Color.argb(100, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-//	}
-//
-//	private void clearImage()
-//	{
-//		mainImageOld.setBackgroundColor(getRandomColor());
-//		mainImageNew.setImageDrawable(null);
-//		mainImageNew.setBackgroundColor(getRandomColor());
-//		mainTextNew.setText("Size : -");
-//	}
 
 }
