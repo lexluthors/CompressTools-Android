@@ -3,7 +3,6 @@ package com.jaywei.compresstools_android;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
@@ -13,7 +12,6 @@ import android.widget.Toast;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -179,7 +177,7 @@ public class MainActivity extends AppCompatActivity
 				oldFile = FileUtil.getTempFile(this, data.getData());
 				mainImageOld.setImageBitmap(BitmapFactory.decodeFile(oldFile.getAbsolutePath()));
 				mainTextOld.setText(String.format("Size : %s", getReadableFileSize(oldFile.length())));
-				clearImage();
+//				clearImage();
 			}
 			catch (IOException e)
 			{
@@ -194,18 +192,18 @@ public class MainActivity extends AppCompatActivity
 		Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show();
 	}
 
-	private int getRandomColor()
-	{
-		Random rand = new Random();
-		return Color.argb(100, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
-	}
-
-	private void clearImage()
-	{
-		mainImageOld.setBackgroundColor(getRandomColor());
-		mainImageNew.setImageDrawable(null);
-		mainImageNew.setBackgroundColor(getRandomColor());
-		mainTextNew.setText("Size : -");
-	}
+//	private int getRandomColor()
+//	{
+//		Random rand = new Random();
+//		return Color.argb(100, rand.nextInt(256), rand.nextInt(256), rand.nextInt(256));
+//	}
+//
+//	private void clearImage()
+//	{
+//		mainImageOld.setBackgroundColor(getRandomColor());
+//		mainImageNew.setImageDrawable(null);
+//		mainImageNew.setBackgroundColor(getRandomColor());
+//		mainTextNew.setText("Size : -");
+//	}
 
 }

@@ -7,12 +7,9 @@ import android.net.Uri;
 import java.io.File;
 
 /**
- * 压缩方法工具类
- * Author: nanchen
- * Email: liushilin520@foxmail.com
- * Date: 2017-03-08 9:03
+ * description:
+ * date: 2017/12/25 10:05
  */
-
 public class CompressTools
 {
 	private static volatile CompressTools INSTANCE;

@@ -3,9 +3,9 @@
 
 **特性：**
 
-***这是和微信压缩效果一样的压缩方式，采用底层压缩，可能是最好的解决方案。**
+***这是和微信压缩效果类似的压缩方式，采用底层压缩。**
 
-***几乎无损压缩图片，保持清晰度最优。可以对比原生方法bitmap.compress(CompressFormat.JPEG, quality, fileOutputStream);**
+***尽量无损压缩图片，保持清晰度最优。可以对比原生方法bitmap.compress(CompressFormat.JPEG, quality, fileOutputStream);**
 
 ***占用内存少，支持压缩生成原图分辨率图片；**
 
