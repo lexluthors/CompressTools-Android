@@ -46,28 +46,28 @@ public class MainActivity extends AppCompatActivity
 	public void compress(View view)
 	{
 		// 压缩本地图片，返回新的file
-		CompressTools.getDefault(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
-		{
-			@Override
-			public void onStart()
-			{
-
-			}
-
-			@Override
-			public void onFail(String error)
-			{
-
-			}
-
-			@Override
-			public void onSuccess(File file)
-			{
-				Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-				mainImageNew.setImageBitmap(bitmap);
-				mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-			}
-		});
+		// CompressTools.getDefault(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		// {
+		// @Override
+		// public void onStart()
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onFail(String error)
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onSuccess(File file)
+		// {
+		// Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+		// mainImageNew.setImageBitmap(bitmap);
+		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+		// }
+		// });
 
 		// for (int i = 0; i < 5; i++)
 		// {
@@ -102,17 +102,48 @@ public class MainActivity extends AppCompatActivity
 		// });
 		// }
 
-		// new CompressTools.Builder(this)
-		// // .setMaxWidth(1280) // 默认最大宽度为720
-		// // .setMaxHeight(850) // 默认最大高度为960
-		// .setQuality(50) // 默认压缩质量为60,60足够清晰
-		// .setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-		// .setKeepResolution(false)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
-		// .setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-		// .compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		new CompressTools.Builder(this)
+				// .setMaxWidth(1280) // 默认最大宽度为720
+				// .setMaxHeight(850) // 默认最大高度为960
+				.setQuality(50) // 默认压缩质量为60,60足够清晰
+				.setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+				.setKeepResolution(false)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
+				.setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+				.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+				{
+					@Override
+					public void onStart()
+					{
+
+					}
+
+					@Override
+					public void onFail(String error)
+					{
+
+					}
+
+					@Override
+					public void onSuccess(File file)
+					{
+						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+						mainImageNew.setImageBitmap(bitmap);
+						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+					}
+				});
+
+		// // 压缩bitmap
+		// CompressTools.getDefault(this).compressToBitmapJni(oldFile, new
+		// CompressTools.OnCompressBitmapListener()
 		// {
 		// @Override
 		// public void onStart()
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onSuccess(Bitmap bitmap)
 		// {
 		//
 		// }
@@ -122,64 +153,34 @@ public class MainActivity extends AppCompatActivity
 		// {
 		//
 		// }
-		//
-		// @Override
-		// public void onSuccess(File file)
-		// {
-		// Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
-		// mainImageNew.setImageBitmap(bitmap);
-		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
-		// }
 		// });
 
-		// // 压缩bitmap
-//		CompressTools.getDefault(this).compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
-//		{
-//			@Override
-//			public void onStart()
-//			{
-//
-//			}
-//
-//			@Override
-//			public void onSuccess(Bitmap bitmap)
-//			{
-//
-//			}
-//
-//			@Override
-//			public void onFail(String error)
-//			{
-//
-//			}
-//		});
-
-		new CompressTools.Builder(this).setMaxWidth(500) // 默认最大宽度为720
-				.setMaxHeight(600) // 默认最大高度为960
-				.setQuality(50) // 默认压缩质量为60,60足够清晰
-				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-				.build().compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
-				{
-					@Override
-					public void onStart()
-					{
-
-					}
-
-					@Override
-					public void onSuccess(Bitmap bitmap)
-					{
-						mainImageNew.setImageBitmap(bitmap);
-						// 这里读取的是bitmap的大小，所以会显示比老图片读取的file大小要大
-						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
-					}
-
-					@Override
-					public void onFail(String error)
-					{
-
-					}
-				});
+		// new CompressTools.Builder(this).setMaxWidth(500) // 默认最大宽度为720
+		// .setMaxHeight(600) // 默认最大高度为960
+		// .setQuality(50) // 默认压缩质量为60,60足够清晰
+		// .setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+		// .build().compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
+		// {
+		// @Override
+		// public void onStart()
+		// {
+		//
+		// }
+		//
+		// @Override
+		// public void onSuccess(Bitmap bitmap)
+		// {
+		// mainImageNew.setImageBitmap(bitmap);
+		// // 这里读取的是bitmap的大小，所以会显示比老图片读取的file大小要大
+		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
+		// }
+		//
+		// @Override
+		// public void onFail(String error)
+		// {
+		//
+		// }
+		// });
 	}
 
 	public void takePhoto(View view)

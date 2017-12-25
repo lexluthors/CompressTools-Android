@@ -153,7 +153,7 @@ public class CompressTools
 		/**
 		 * 设置压缩的后缀格式
 		 */
-		public Builder setCompressFormat(Bitmap.CompressFormat compressFormat)
+		public Builder setBitmapFormat(Bitmap.CompressFormat compressFormat)
 		{
 			compressTools.compressFormat = compressFormat;
 			return this;
