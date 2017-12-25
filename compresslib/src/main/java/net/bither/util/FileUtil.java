@@ -1,4 +1,4 @@
-package news.jaywei.com.compresslib;
+package net.bither.util;
 
 import android.content.Context;
 import android.database.Cursor;
@@ -11,11 +11,6 @@ import android.provider.OpenableColumns;
 import android.util.Log;
 
 import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.DecimalFormat;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -23,8 +18,6 @@ import java.util.concurrent.Executors;
 public class FileUtil
 {
 	static final String FILES_PATH = "CompressTools";
-	private static final int EOF = -1;
-	private static final int DEFAULT_BUFFER_SIZE = 1024 * 4;
 	public static final String PHOTO_PATH = Environment.getExternalStorageDirectory() + File.separator + "DCIM" + File.separator + File.separator + "Cherry"
 			+ File.separator;
 
@@ -57,45 +50,7 @@ public class FileUtil
 		return newFile;
 	}
 
-	/**
-	 * 获取临时文件
-	 *
-	 * @param context
-	 *            上下文
-	 * @param uri
-	 *            url
-	 * @return 临时文件
-	 * @throws IOException
-	 */
-	public static File getTempFile(Context context, Uri uri) throws IOException
-	{
-		InputStream inputStream = context.getContentResolver().openInputStream(uri);
-		String fileName = getFileName(context, uri);
-		String[] splitName = splitFileName(fileName);
-		File tempFile = File.createTempFile(splitName[0], splitName[1]);
-		tempFile = renameFile(tempFile, fileName);
-		tempFile.deleteOnExit();
-		FileOutputStream out = null;
-		try
-		{
-			out = new FileOutputStream(tempFile);
-		}
-		catch (FileNotFoundException e)
-		{
-			e.printStackTrace();
-		}
-		if (inputStream != null)
-		{
-			copy(inputStream, out);
-			inputStream.close();
-		}
 
-		if (out != null)
-		{
-			out.close();
-		}
-		return tempFile;
-	}
 
 	/**
 	 * 截取文件名称
@@ -103,7 +58,7 @@ public class FileUtil
 	 * @param fileName
 	 *            文件名称
 	 */
-	static String[] splitFileName(String fileName)
+	public static String[] splitFileName(String fileName)
 	{
 		String name = fileName;
 		String extension = "";
@@ -126,7 +81,7 @@ public class FileUtil
 	 *            uri
 	 * @return 文件名称
 	 */
-	static String getFileName(Context context, Uri uri)
+	public static String getFileName(Context context, Uri uri)
 	{
 		String result = null;
 		if (uri.getScheme().equals("content"))
@@ -189,32 +144,7 @@ public class FileUtil
 		}
 	}
 
-	static int copy(InputStream input, OutputStream output) throws IOException
-	{
-		long count = copyLarge(input, output);
-		if (count > Integer.MAX_VALUE)
-		{
-			return -1;
-		}
-		return (int) count;
-	}
 
-	static long copyLarge(InputStream input, OutputStream output) throws IOException
-	{
-		return copyLarge(input, output, new byte[DEFAULT_BUFFER_SIZE]);
-	}
-
-	static long copyLarge(InputStream input, OutputStream output, byte[] buffer) throws IOException
-	{
-		long count = 0;
-		int n;
-		while (EOF != (n = input.read(buffer)))
-		{
-			output.write(buffer, 0, n);
-			count += n;
-		}
-		return count;
-	}
 
 	public static String getReadableFileSize(long size)
 	{
