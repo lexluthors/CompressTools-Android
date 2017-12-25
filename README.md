@@ -35,14 +35,19 @@
 
 **使用方法：**
 
-    compile 'com.jaywei:compresstool:1.0.4'
+    compile 'com.jaywei:compresstool:1.2.0'
+
+**1.2.0：**
+
+    优化代码，精简代码
+    优化逻辑，修复7.0上的bug
 
 
 **1和2使用默认设置，默认设置最大宽高为720*960**
 
 **1，压缩本地图片**
 
-    CompressTools.getDefault(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+    CompressTools.getInstance(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
     		{
     			@Override
     			public void onStart()
@@ -66,7 +71,11 @@
     			{
 
     			}
+                @Override
+			    public void onFail(String error)
+			    {
 
+				}
     			@Override
     			public void onSuccess(Bitmap bitmap)
     			{
@@ -78,7 +87,7 @@
 
    **注意：setKeepResolution(true)//设置是否保持原图分辨率，则设置的最大宽高就无效了,不需要设置最大宽高了。设置也不会报错了，该参数默认false**
 
-    new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
+    CompressTools.newBuilder(this).setMaxWidth(1080) // 默认最大宽度为720
     				.setMaxHeight(1920) // 默认最大高度为960
     				.setQuality(50) // 默认压缩质量为60,60足够清晰
     				//.setKeepResolution(true)//设置是否保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
@@ -91,7 +100,11 @@
     					{
 
     					}
+                        @Override
+					    public void onFail(String error)
+					    {
 
+					    }
     					@Override
     					public void onSuccess(File file)
     					{
@@ -102,7 +115,7 @@
 
    **注意：setKeepResolution方法在压缩bitmap中无效，以最大宽高为准。**
 
-    new CompressTools.Builder(this).setMaxWidth(1080) // 默认最大宽度为720
+    CompressTools.newBuilder(this).setMaxWidth(1080) // 默认最大宽度为720
     				.setMaxHeight(1920) // 默认最大高度为960
     				.setQuality(50) // 默认压缩质量为60,60足够清晰
     				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
@@ -119,6 +132,11 @@
     					public void onSuccess(Bitmap bitmap)
     					{
     					}
+    					@Override
+                        public void onFail(String error)
+                        {
+
+                        }
     				});
 
 **5，批量压缩：**
@@ -127,7 +145,7 @@
 
     for (int i = 0; i < 5; i++)
     		{
-    			new CompressTools.Builder(this).setMaxWidth(1280) // 默认最大宽度为720
+    			CompressTools.newBuilder(this).setMaxWidth(1280) // 默认最大宽度为720
     					.setMaxHeight(850) // 默认最大高度为960
     					.setQuality(50) // 默认压缩质量为60,60足够清晰
     					.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
@@ -140,7 +158,11 @@
     						{
 
     						}
+                            @Override
+			                 public void onFail(String error)
+			                {
 
+				            }
     						@Override
     						public void onSuccess(File file)
     						{
@@ -151,7 +173,7 @@
 
 
 
-**写在最后：开源不易，如果对你有帮助希望能给个star或fork激励我继续坚持。**
+**写在最后：该项目是工作中使用的实例，我整理了一下，放到这里！如果对你有帮助希望能给个star或fork激励我继续坚持。**
 
 有问题联系我：lexluthors@163.com
 

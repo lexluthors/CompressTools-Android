@@ -84,7 +84,7 @@ public class CompressTools {
      * author: liujie
      * date: 2017/8/22 18:19
      */
-    public void compressToFileJni(final File file, final OnCompressListener mOnCompressListener) {
+    public void compressToFile(final File file, final OnCompressListener mOnCompressListener) {
         FileUtil.runOnSubThread(new Runnable() {
             @Override
             public void run() {
@@ -99,7 +99,7 @@ public class CompressTools {
      * author: liujie
      * date: 2017/8/22 18:19
      */
-    public void compressToBitmapJni(final File file, final OnCompressBitmapListener onCompressBitmapListener) {
+    public void compressToBitmap(final File file, final OnCompressBitmapListener onCompressBitmapListener) {
         FileUtil.runOnSubThread(new Runnable() {
             @Override
             public void run() {

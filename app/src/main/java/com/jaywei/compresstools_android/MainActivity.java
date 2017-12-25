@@ -54,7 +54,7 @@ public class MainActivity extends AppCompatActivity
 	public void compress(View view)
 	{
 		// 压缩本地图片，返回新的file
-		// CompressTools.getInstance(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		// CompressTools.getInstance(this).compressToFile(oldFile, new CompressTools.OnCompressListener()
 		// {
 		// @Override
 		// public void onStart()
@@ -86,7 +86,7 @@ public class MainActivity extends AppCompatActivity
 		// .setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
 		// .setKeepResolution(true)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
 		// .setFileName("testasdfas").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-		// .compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+		// .compressToFile(oldFile, new CompressTools.OnCompressListener()
 		// {
 		// @Override
 		// public void onStart()
@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity
 				.setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
 				.setKeepResolution(false)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
 				.setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-				.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+				.compressToFile(oldFile, new CompressTools.OnCompressListener()
 				{
 					@Override
 					public void onStart()
@@ -141,7 +141,7 @@ public class MainActivity extends AppCompatActivity
 				});
 
 		// // 压缩bitmap
-		// CompressTools.getInstance(this).compressToBitmapJni(oldFile, new
+		// CompressTools.getInstance(this).compressToBitmap(oldFile, new
 		// CompressTools.OnCompressBitmapListener()
 		// {
 		// @Override
@@ -167,7 +167,7 @@ public class MainActivity extends AppCompatActivity
 		// .setMaxHeight(600) // 默认最大高度为960
 		// .setQuality(50) // 默认压缩质量为60,60足够清晰
 		// .setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-		// .build().compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
+		// .build().compressToBitmap(oldFile, new CompressTools.OnCompressBitmapListener()
 		// {
 		// @Override
 		// public void onStart()
