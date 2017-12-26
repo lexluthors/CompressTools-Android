@@ -47,14 +47,18 @@
 
 **1，压缩本地图片**
 
-    CompressTools.getInstance(this).compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+    CompressTools.getInstance(this).compressToFile(oldFile, new CompressTools.OnCompressListener()
     		{
     			@Override
     			public void onStart()
     			{
 
     			}
+                @Override
+			    public void onFail(String error)
+			    {
 
+				}
     			@Override
     			public void onSuccess(File file)
     			{
@@ -64,7 +68,7 @@
 
 **2，压缩bitmap：**
 
-    CompressTools.getDefault(this).compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
+    CompressTools.getDefault(this).compressToBitmap(oldFile, new CompressTools.OnCompressBitmapListener()
     		{
     			@Override
     			public void onStart()
@@ -93,7 +97,7 @@
     				//.setKeepResolution(true)//设置是否保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
     				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
     				.setFileName("test1").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-    				.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+    				.compressToFile(oldFile, new CompressTools.OnCompressListener()
     				{
     					@Override
     					public void onStart()
@@ -120,7 +124,7 @@
     				.setQuality(50) // 默认压缩质量为60,60足够清晰
     				.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
     				.setFileName("test2").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-    				.compressToBitmapJni(oldFile, new CompressTools.OnCompressBitmapListener()
+    				.compressToBitmap(oldFile, new CompressTools.OnCompressBitmapListener()
     				{
     					@Override
     					public void onStart()
@@ -151,7 +155,7 @@
     					.setCompressFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
     					// .setKeepResolution(true)//设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
     					.setFileName("test"+i).setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-    					.compressToFileJni(oldFile, new CompressTools.OnCompressListener()
+    					.compressToFile(oldFile, new CompressTools.OnCompressListener()
     					{
     						@Override
     						public void onStart()
