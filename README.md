@@ -35,12 +35,11 @@
 
 **使用方法：**
 
-    compile 'com.jaywei:compresstool:1.2.0'
+    compile 'com.jaywei:compresstool:1.2.1'
 
-**1.2.0：**
+**1.2.1：**
 
-    优化代码，精简代码
-    优化逻辑，修复7.0上的bug
+    优化线程池
 
 
 **1和2使用默认设置，默认设置最大宽高为720*960**

@@ -32,7 +32,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile 'com.jakewharton:butterknife:8.5.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.5.1'
-//        compile 'com.jaywei:compresstool:1.0.4'
-//    compile project(':compresslib')
-    compile 'com.jaywei:compresstool:1.2.0'
+    //        compile 'com.jaywei:compresstool:1.0.4'
+    //    compile project(':compresslib')
+    //    compile 'com.jaywei:compresstool:1.2.0'
+    compile project(':compresslib')
 }
