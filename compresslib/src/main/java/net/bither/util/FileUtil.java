@@ -208,7 +208,7 @@ public class FileUtil
 
 	private static Handler sHandler = new Handler(Looper.getMainLooper());
 
-	private static ExecutorService sExecutorService = Executors.newSingleThreadExecutor();
+	private static ExecutorService sExecutorService = Executors.newCachedThreadPool();
 
 	public static void runOnUiThread(Runnable r)
 	{

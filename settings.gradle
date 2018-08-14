@@ -1,1 +1,1 @@
-include ':app', ':compresslib'
+include ':app'
