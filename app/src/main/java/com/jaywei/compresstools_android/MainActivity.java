@@ -42,6 +42,7 @@ public class MainActivity extends AppCompatActivity
 	private static final int PICK_IMAGE_REQUEST = 1;
 
 	private File oldFile;
+	private String filePath;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)
@@ -110,30 +111,52 @@ public class MainActivity extends AppCompatActivity
 		// });
 		// }
 
+//		CompressTools.newBuilder(this)
+//				// .setMaxWidth(1280) // 默认最大宽度为720
+//				// .setMaxHeight(850) // 默认最大高度为960
+//				.setQuality(60) // 默认压缩质量为60,60足够清晰
+//				.setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+//				.setKeepResolution(false)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
+//				.setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
+//				.compressToFile(oldFile, new CompressTools.OnCompressListener<File>() {
+//					@Override
+//					public void onStart() {
+//
+//					}
+//
+//					@Override
+//					public void onFail(String error) {
+//
+//					}
+//
+//					@Override
+//					public void onSuccess(File file) {
+//						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
+//						mainImageNew.setImageBitmap(bitmap);
+//						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
+//					}
+//				});
+
 		CompressTools.newBuilder(this)
 				// .setMaxWidth(1280) // 默认最大宽度为720
 				// .setMaxHeight(850) // 默认最大高度为960
-				.setQuality(50) // 默认压缩质量为60,60足够清晰
+				.setQuality(60) // 默认压缩质量为60,60足够清晰
 				.setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
 				.setKeepResolution(false)// 设置保持原图分辨率，则设置的最大宽高就无效了。不需要设置最大宽高了。设置也不会报错了，该参数默认false
 				.setFileName("test123").setDestinationDirectoryPath(FileUtil.getPhotoFileDir().getAbsolutePath()).build()
-				.compressToFile(oldFile, new CompressTools.OnCompressListener()
-				{
+				.compressToFile(filePath, new CompressTools.OnCompressListener<File>() {
 					@Override
-					public void onStart()
-					{
+					public void onStart() {
 
 					}
 
 					@Override
-					public void onFail(String error)
-					{
+					public void onFail(String error) {
 
 					}
 
 					@Override
-					public void onSuccess(File file)
-					{
+					public void onSuccess(File file) {
 						Bitmap bitmap = BitmapFactory.decodeFile(file.getAbsolutePath());
 						mainImageNew.setImageBitmap(bitmap);
 						mainTextNew.setText(String.format("Size : %s", getReadableFileSize(file.length())));
@@ -163,32 +186,28 @@ public class MainActivity extends AppCompatActivity
 		// }
 		// });
 
-		// CompressTools.newBuilder(this).setMaxWidth(500) // 默认最大宽度为720
-		// .setMaxHeight(600) // 默认最大高度为960
-		// .setQuality(50) // 默认压缩质量为60,60足够清晰
-		// .setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
-		// .build().compressToBitmap(oldFile, new CompressTools.OnCompressBitmapListener()
-		// {
-		// @Override
-		// public void onStart()
-		// {
-		//
-		// }
-		//
-		// @Override
-		// public void onSuccess(Bitmap bitmap)
-		// {
-		// mainImageNew.setImageBitmap(bitmap);
-		// // 这里读取的是bitmap的大小，所以会显示比老图片读取的file大小要大
-		// mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
-		// }
-		//
-		// @Override
-		// public void onFail(String error)
-		// {
-		//
-		// }
-		// });
+//		 CompressTools.newBuilder(this).setMaxWidth(500) // 默认最大宽度为720
+//		 .setMaxHeight(600) // 默认最大高度为960
+//		 .setQuality(50) // 默认压缩质量为60,60足够清晰
+//		 .setBitmapFormat(Bitmap.CompressFormat.JPEG) // 设置默认压缩为jpg格式
+//		 .build().compressToBitmap(oldFile, new CompressTools.OnCompressListener<Bitmap>() {
+//			 @Override
+//			 public void onStart() {
+//
+//			 }
+//
+//			 @Override
+//			 public void onFail(String error) {
+//
+//			 }
+//
+//			 @Override
+//			 public void onSuccess(Bitmap bitmap) {
+//				 mainImageNew.setImageBitmap(bitmap);
+//				 // 这里读取的是bitmap的大小，所以会显示比老图片读取的file大小要大
+//				 mainTextNew.setText(String.format("Size : %s", getReadableFileSize(bitmap.getByteCount())));
+//			 }
+//		 });
 	}
 
 	public void takePhoto(View view)
@@ -212,6 +231,7 @@ public class MainActivity extends AppCompatActivity
 			try
 			{
 				oldFile = getTempFile(this, data.getData());
+                filePath = oldFile.getAbsolutePath();
 				mainImageOld.setImageBitmap(BitmapFactory.decodeFile(oldFile.getAbsolutePath()));
 				mainTextOld.setText(String.format("Size : %s", getReadableFileSize(oldFile.length())));
 			}

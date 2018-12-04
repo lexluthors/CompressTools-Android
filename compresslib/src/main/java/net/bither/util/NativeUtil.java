@@ -33,7 +33,7 @@ public class NativeUtil {
      * author: liujie
      * date: 2017/12/25 14:36
      */
-    public static void saveBitmapWithMaxWH(Bitmap bit, int quality, String fileName, boolean optimize, float maxWidth, float maxHeight) {
+    public static void saveBitmapWithMaxWH(Bitmap bit, int quality, String fileName, boolean optimize, float maxWidth, float maxHeight,boolean keepResolution) {
         float originalScale = bit.getWidth() / bit.getHeight();
         float maxScale = maxWidth / maxHeight;
         float finalScale = 1f;
@@ -42,7 +42,9 @@ public class NativeUtil {
         } else {
             finalScale = maxHeight / bit.getHeight();
         }
-        float scaleSize = maxHeight;
+        if(keepResolution){
+            finalScale = 1;
+        }
         saveBitmapWithScale(bit, quality, fileName, optimize, finalScale);
     }
 
